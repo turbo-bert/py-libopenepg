@@ -20,7 +20,7 @@ logging.Formatter.converter = time.gmtime
 
 def list_channels():
     """Return all known broadcast channel name identifiers."""
-    return ['ard', 'wdr', 'arte', 'br', 'rbb', 'mdr', 'ndr', 'rbtv', 'sr', 'swrbw', 'swrrp', 'ardalpha', 'one', 'kika', 'phoenix', 'rtl', 'tagesschau24', 'vox', 'zdf', 'sat1', 'kabel1', 'rtl2']
+    return ['ard', 'wdr', 'arte', 'br', 'rbb', 'mdr', 'ndr', 'rbtv', 'sr', 'swrbw', 'swrrp', 'ardalpha', 'one', 'kika', 'phoenix', 'rtl', 'tagesschau24', 'vox', 'zdf', 'sat1', 'kabel1', 'rtl2', 'wdr2.fm', 'wdr5.fm']
 
 
 def get_livestream_site(channel_name):
@@ -202,6 +202,12 @@ def process_data(channel_name, filename, iso_day, url):
     if channel_name in ['zdf']:
         data = processing_helper_zdfclass(channel_name, raw_data, iso_day, url)
 
+    if channel_name in ['wdr2.fm']:
+        data = processing_helper_wdr2class(channel_name, raw_data, iso_day, url)
+
+    if channel_name in ['wdr5.fm']:
+        data = processing_helper_wdr5class(channel_name, raw_data, iso_day, url)
+
     if data == None:
         data = "unprocessed"
 
@@ -249,6 +255,10 @@ def url_generator_day_program(channel_name, iso_day):
         return 'https://programm.ard.de/TV/Programm/Sender?datum='+iso2dedate(iso_day)+'&hour=0&sender=28725'
     if channel_name == 'tagesschau24':
         return 'https://programm.ard.de/TV/Programm/Sender?datum='+iso2dedate(iso_day)+'&hour=0&sender=28721'
+    if channel_name == 'wdr2.fm':
+        return 'https://www.wdr.de/programmvorschau/wdr2/uebersicht/'+iso_day+'/'
+    if channel_name == 'wdr5.fm':
+        return 'https://www.wdr.de/programmvorschau/wdr5/uebersicht/'+iso_day+'/'
     if channel_name == 'vox':
         return 'https://www.vox.de/fernsehprogramm/' + iso_day
     if channel_name == 'rtl':
@@ -333,6 +343,12 @@ def processing_helper_rtlclass(channel_name, raw_data, iso_day, url):
 
     return "\n".join(titles)
 
+
+def processing_helper_wdr2class(channel_name, raw_data, iso_day, url):
+    return ""
+
+def processing_helper_wdr5class(channel_name, raw_data, iso_day, url):
+    return ""
 
 def processing_helper_sat1class(channel_name, raw_data, iso_day, url):
     """Process a typical day overview HTML file from sat1.de."""
